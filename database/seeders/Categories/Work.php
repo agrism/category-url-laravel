@@ -253,6 +253,26 @@ class Work extends AbstractCategories
 			'Bērniem' => ['parent_id' => 'courses-education', 'priority' => 0],
 			'Sports' => ['parent_id' => 'courses-education', 'priority' => 0],
 		]);
+
+		$data = array_merge($data, [
+			'Biznesa, kompāniju pārdošana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Dīleru, mazumtirdzniecības izplatītāju meklēšana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Ekspertīzes un novērtējums' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Investora meklēšana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Izplatītāju meklēšana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Izsoļu rīkošana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Oficiālie kompāniju ziņojumi' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Partneru meklēšana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Poligrāfija un prese' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Reklāma' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Vizītkartes, suvenīri, uzlīmes' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Zīmogi, spiedogi, plombas' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Dažādi' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Celtniecība' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Grāmatvedības pakalpojumi' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Parādu atgriešana' => ['parent_id' => 'business-contacts', 'priority' => 0],
+			'Uzņēmumu reģistrācija' => ['parent_id' => 'business-contacts', 'priority' => 0],
+		]);
 	}
 
 	public function generatePath()
@@ -278,6 +298,7 @@ class Work extends AbstractCategories
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
 			'work' => [$this->categorySeeder->getCategoryIdByName('business-contacts')],
+			'business-contacts' => $this->categorySeeder->getChildrenCategoriesIdsByName('business-contacts'),
 		]));
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
