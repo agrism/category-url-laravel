@@ -289,6 +289,15 @@ class Work extends AbstractCategories
 			'Vīzu un dokumentu noformēšana' => ['parent_id' => 'legal-services', 'priority' => 0],
 			'Cits' => ['parent_id' => 'legal-services', 'priority' => -1],
 		]);
+
+		$data = array_merge($data, [
+			'Apdrošināšana' => ['parent_id' => 'finances', 'priority' => 0],
+			'Audits, aktīvu novērtējums' => ['parent_id' => 'finances', 'priority' => 0],
+			'Grāmatvedības pakalpojumi' => ['parent_id' => 'finances', 'priority' => 0],
+			'Kredīti un līzings' => ['parent_id' => 'finances', 'priority' => 0],
+			'Nodokļu un finanšu konsultācijas' => ['parent_id' => 'finances', 'priority' => 0],
+			'Dažādi' => ['parent_id' => 'finances', 'priority' => 0],
+		]);
 	}
 
 	public function generatePath()
@@ -324,6 +333,7 @@ class Work extends AbstractCategories
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
 			'work' => [$this->categorySeeder->getCategoryIdByName('finances')],
+			'finances' => $this->categorySeeder->getChildrenCategoriesIdsByName('finances'),
 		]));
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
