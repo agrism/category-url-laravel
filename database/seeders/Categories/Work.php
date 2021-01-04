@@ -273,6 +273,22 @@ class Work extends AbstractCategories
 			'Parādu atgriešana' => ['parent_id' => 'business-contacts', 'priority' => 0],
 			'Uzņēmumu reģistrācija' => ['parent_id' => 'business-contacts', 'priority' => 0],
 		]);
+
+		$data = array_merge($data, [
+			'Administratīvās lietas' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Civillietas' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Ekspertīzes un novērtēšana' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Ģimenes tiesības' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Grāmatvedības pakalpojumi' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Krimināllietas' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Līdzdalība darijumos' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Notāra pakalpojumi' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Parādu atgriešana' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Uzņēmumu juridiskā apkalpošana' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Uzņēmumu reģistrācija' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Vīzu un dokumentu noformēšana' => ['parent_id' => 'legal-services', 'priority' => 0],
+			'Cits' => ['parent_id' => 'legal-services', 'priority' => -1],
+		]);
 	}
 
 	public function generatePath()
@@ -303,6 +319,7 @@ class Work extends AbstractCategories
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
 			'work' => [$this->categorySeeder->getCategoryIdByName('legal-services')],
+			'legal-services' => $this->categorySeeder->getChildrenCategoriesIdsByName('legal-services'),
 		]));
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
