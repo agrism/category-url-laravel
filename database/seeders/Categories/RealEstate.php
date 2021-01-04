@@ -175,7 +175,7 @@ class RealEstate extends AbstractCategories
 			'valles-pag' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
 			'vietalvas-pag' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
 			'zalves-pag' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
-			'cits-aizkraukles' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
+			'cits-aizkraukles' => ['parent_id' => 'region-aizkraukle', 'priority' => -1],
 
 			'bauska' => ['parent_id' => 'region-bauska', 'priority' => 100],
 			'barbeles-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
