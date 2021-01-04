@@ -222,11 +222,6 @@ class CategorySeeder extends Seeder
 			'cits-aizkraukles' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
 
 
-
-
-
-
-
 			'bauska' => ['parent_id' => 'region-bauska', 'priority' => 100],
 			'barbeles-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
 			'brunavas-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
@@ -245,6 +240,29 @@ class CategorySeeder extends Seeder
 			'vecumnieku-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
 			'viestura-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
 			'cits-bauskas' => ['parent_id' => 'region-bauska', 'priority' => -1],
+
+			'balvi' => ['parent_id' => 'region-balvi', 'priority' => 100],
+			'vilaka' => ['parent_id' => 'region-balvi', 'priority' => 99],
+			'baltinavas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'balvu-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'berzkalnes-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'berzpils-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'briezciems-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'krisjanu-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'kubulu-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'kupravas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'lazdukalna-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'lazdulejas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'mednevas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'rugaju-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'skilbenu-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'susaju-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'tilzas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'veztilzas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'vezumu-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'viksnas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'ziguru-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
+			'cits-balvu' => ['parent_id' => 'region-balvi', 'priority' => -1],
 
 
 			'color' => ['parent_id' => null, 'priority' => 0],
@@ -318,6 +336,10 @@ class CategorySeeder extends Seeder
 			[
 				'regions' => [$this->getCategoryIdByName('region-aluksne')],
 				'region-aluksne' => $this->getChildrenCategoriesIdsByName('region-aluksne'),
+			],
+			[
+				'regions' => [$this->getCategoryIdByName('region-balvi')],
+				'region-balvi' => $this->getChildrenCategoriesIdsByName('region-balvi'),
 			],
 			[
 				'regions' => [$this->getCategoryIdByName('region-bauska')],
