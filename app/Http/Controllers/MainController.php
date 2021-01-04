@@ -8,9 +8,8 @@ use App\Models\Category;
 use App\Models\Path;
 use App\Services\NextCategory;
 use App\Services\Value;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use stdClass;
-use function PHPUnit\Framework\once;
 
 class MainController extends Controller
 {
@@ -96,10 +95,13 @@ class MainController extends Controller
 			return $this;
 		}
 
-		$paths = Path::with('pathElements.children.category')
-			->with('pathElements.shouldBeSelected.category')
-			->with('pathElements.category')
-			->get();
+		$paths = Cache::remember('cat_path', 60,function (){
+			return Path::with('pathElements.children.category')
+				->with('pathElements.shouldBeSelected.category')
+				->with('pathElements.category')
+				->get();
+
+		});
 
 		$isAllPathsCompleted = false;
 

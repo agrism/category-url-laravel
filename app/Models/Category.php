@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\TableDelete;
 use stdClass;
@@ -18,14 +18,20 @@ class Category extends Model
 	private static function init()
 	{
 		if(!self::$categories){
-			self::$categories = DB::table('categories')->get();
+			self::$categories = self::$categories = static::getDbData();
 			return;
 		}
 
 		if (self::$categories->count() === 0) {
-			self::$categories = DB::table('categories')->get();
+			self::$categories = static::getDbData();
 			return;
 		}
+	}
+
+	private static function getDbData(){
+		return Cache::rememberForever('cat_db', function (){
+			return DB::table('categories')->get();
+		});
 	}
 
 	public static function getChildrenCategories($categoryId): array
@@ -41,7 +47,6 @@ class Category extends Model
 	public static function getCategoryByName(string $name): stdClass
 	{
 		self::init();
-
 
 		if ($r = self::$categories->filter(function ($category) use ($name) {
 			return $category->name == $name;

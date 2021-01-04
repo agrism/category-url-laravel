@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
@@ -426,6 +427,10 @@ class CategorySeeder extends Seeder
 			}
 			$this->createPath('path_real_flats_', $data);
 		}
+
+
+		Cache::pull('cat_db');
+		Cache::pull('cat_path');
 
 	}
 
