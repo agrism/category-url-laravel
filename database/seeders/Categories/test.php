@@ -1,6 +1,0 @@
-    'Apdrošināšana' => 'xxxxx',
-    'Audits, aktīvu novērtējums' => 'xxxxx',
-    'Grāmatvedības pakalpojumi' => 'xxxxx',
-    'Kredīti un līzings' => 'xxxxx',
-    'Nodokļu un finanšu konsultācijas' => 'xxxxx',
-    'Dažādi' => 'xxxxx',

@@ -298,6 +298,34 @@ class Work extends AbstractCategories
 			'Nodokļu un finanšu konsultācijas' => ['parent_id' => 'finances', 'priority' => 0],
 			'Dažādi' => ['parent_id' => 'finances', 'priority' => 0],
 		]);
+
+		$data = array_merge($data, [
+			'Angļu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Franču' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Igauņu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Itāļu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Krievu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Latviešu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Lietuviešu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Norvēģu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Poļu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Spāņu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Vācu' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Zviedru' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Citas valodas' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Ortogrāfijas pārbaude' => ['parent_id' => 'text-translations', 'priority' => 0],
+			'Dažādi' => ['parent_id' => 'text-translations', 'priority' => -1],
+		]);
+
+		$data = array_merge($data, [
+			'Administrēšana' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Domēnu pārdošana' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Domēnu reģistrācija' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Hostings' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Interneta pieslēgšana' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Web-dizains un saitu izstrāde' => ['parent_id' => 'internet-services', 'priority' => 0],
+			'Dažādi' => ['parent_id' => 'internet-services', 'priority' => -1],
+		]);
 	}
 
 	public function generatePath()
@@ -338,10 +366,12 @@ class Work extends AbstractCategories
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
 			'work' => [$this->categorySeeder->getCategoryIdByName('text-translations')],
+			'text-translations' => $this->categorySeeder->getChildrenCategoriesIdsByName('text-translations'),
 		]));
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
 			'work' => [$this->categorySeeder->getCategoryIdByName('internet-services')],
+			'internet-services' => $this->categorySeeder->getChildrenCategoriesIdsByName('internet-services'),
 		]));
 
 		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
