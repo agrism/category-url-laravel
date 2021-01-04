@@ -221,7 +221,6 @@ class CategorySeeder extends Seeder
 			'zalves-pag' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
 			'cits-aizkraukles' => ['parent_id' => 'region-aizkraukle', 'priority' => 0],
 
-
 			'bauska' => ['parent_id' => 'region-bauska', 'priority' => 100],
 			'barbeles-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
 			'brunavas-pag' => ['parent_id' => 'region-bauska', 'priority' => 0],
@@ -263,6 +262,33 @@ class CategorySeeder extends Seeder
 			'viksnas-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
 			'ziguru-pag' => ['parent_id' => 'region-balvi', 'priority' => 0],
 			'cits-balvu' => ['parent_id' => 'region-balvi', 'priority' => -1],
+
+			'cesis' => ['parent_id' => 'region-cesis', 'priority' => 100],
+			'ligatne' => ['parent_id' => 'region-cesis', 'priority' => 99],
+			'amatas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'drabesu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'drustu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'dzerbenes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'inesu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'jaunpiebalgas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'kaives-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'liepas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'ligatnes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'marsenu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'nitaures-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'priekulu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'raiskuma-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'raunas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'skujenes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'stalbes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'straupes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'taurenes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'vaives-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'vecpiebalgas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'veselavas-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'zaubes-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'zosenu-pag' => ['parent_id' => 'region-cesis', 'priority' => 0],
+			'cits-cesis' => ['parent_id' => 'region-cesis', 'priority' => 0],
 
 
 			'color' => ['parent_id' => null, 'priority' => 0],
@@ -342,12 +368,16 @@ class CategorySeeder extends Seeder
 				'region-balvi' => $this->getChildrenCategoriesIdsByName('region-balvi'),
 			],
 			[
+				'regions' => [$this->getCategoryIdByName('region-aizkraukle')],
+				'region-aizkraukle' => $this->getChildrenCategoriesIdsByName('region-aizkraukle'),
+			],
+			[
 				'regions' => [$this->getCategoryIdByName('region-bauska')],
 				'region-bauska' => $this->getChildrenCategoriesIdsByName('region-bauska'),
 			],
 			[
-				'regions' => [$this->getCategoryIdByName('region-aizkraukle')],
-				'region-aizkraukle' => $this->getChildrenCategoriesIdsByName('region-aizkraukle'),
+				'regions' => [$this->getCategoryIdByName('region-cesis')],
+				'region-cesis' => $this->getChildrenCategoriesIdsByName('region-cesis'),
 			],
 		];
 
