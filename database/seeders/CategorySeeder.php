@@ -75,7 +75,7 @@ class CategorySeeder extends Seeder
 			'region-bauska' => ['parent_id' => 'regions', 'priority' => 0],
 			'region-cesis' => ['parent_id' => 'regions', 'priority' => 0],
 			'region-daugavpils' => ['parent_id' => 'regions', 'priority' => 0],
-			'region-dobeele' => ['parent_id' => 'regions', 'priority' => 0],
+			'region-dobele' => ['parent_id' => 'regions', 'priority' => 0],
 			'region-gulbene' => ['parent_id' => 'regions', 'priority' => 0],
 			'region-jekabpils' => ['parent_id' => 'regions', 'priority' => 0],
 			'region-jelgava' => ['parent_id' => 'regions', 'priority' => 0],
@@ -319,7 +319,31 @@ class CategorySeeder extends Seeder
 			'vaboles-pag' => ['parent_id' => 'region-daugavpils', 'priority' => 0],
 			'vecalienas-pag' => ['parent_id' => 'region-daugavpils', 'priority' => 0],
 			'visku-pag' => ['parent_id' => 'region-daugavpils', 'priority' => 0],
-			'cits-daugavpils' => ['parent_id' => 'region-daugavpils', 'priority' => 0],
+			'cits-daugavpils' => ['parent_id' => 'region-daugavpils', 'priority' => -1],
+
+
+			'auce' => ['parent_id' => 'region-dobele', 'priority' => 100],
+			'dobele' => ['parent_id' => 'region-dobele', 'priority' => 100],
+			'annenieku-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'auces-lauku-teritorija' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'augstkalnes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'auru-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'benes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'berzu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'bikstu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'bukaisu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'dobeles-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'iles-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'jaunberzes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'krimunu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'lielauces-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'naudites-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'penkules-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'tervetes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'ukru-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'vitinu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'zebrenes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
+			'cits-dobeles' => ['parent_id' => 'region-dobele', 'priority' => -1],
 
 
 			'color' => ['parent_id' => null, 'priority' => 0],
@@ -413,6 +437,10 @@ class CategorySeeder extends Seeder
 			[
 				'regions' => [$this->getCategoryIdByName('region-daugavpils')],
 				'region-daugavpils' => $this->getChildrenCategoriesIdsByName('region-daugavpils'),
+			],
+			[
+				'regions' => [$this->getCategoryIdByName('region-dobele')],
+				'region-dobele' => $this->getChildrenCategoriesIdsByName('region-dobele'),
 			],
 		];
 
