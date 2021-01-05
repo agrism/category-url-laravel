@@ -21,6 +21,8 @@ class MainController extends Controller
 
 		$this->renderPath();
 
+		echo '<style>body {background-color: #b1d4b1}</style>';
+
 		Element::factory('hr')->setEchoValue()->render();
 
 		dump($this->doo()->getValues());
