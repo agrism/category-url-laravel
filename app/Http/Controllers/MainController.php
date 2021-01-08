@@ -25,7 +25,9 @@ class MainController extends Controller
 
 		Element::factory('hr')->setEchoValue()->render();
 
-		dump($this->doo()->getValues());
+		$this->doo();
+
+		dump($this->getValues());
 	}
 
 	private function getSegments(): array
@@ -97,9 +99,8 @@ class MainController extends Controller
 			return $this;
 		}
 
-		$paths = Cache::remember('cat_path', 60,function (){
-			return Path::with('pathElements.children.category')
-				->with('pathElements.shouldBeSelected.category')
+		$paths = Cache::remember('cat_path', 60, function () {
+			return Path::with('pathElements.shouldBeSelected.category')
 				->with('pathElements.category')
 				->get();
 
