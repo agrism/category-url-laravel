@@ -15,6 +15,8 @@ class MainController extends Controller
 {
 	private $routeSegmentString;
 
+	private $catLinks = [];
+
 	public function index($route = null)
 	{
 		$this->routeSegmentString = $route;
@@ -27,7 +29,7 @@ class MainController extends Controller
 
 		$this->doo();
 
-		dump($this->getValues());
+//		dump($this->getValues());
 	}
 
 	private function getSegments(): array
@@ -208,7 +210,25 @@ class MainController extends Controller
 		/*** @var stdClass */
 		$prevCategory = null;
 
-		foreach ($categoryLinks as $childCategory) {
+		$data = [];
+
+		$x = 0;
+		$y = 0;
+
+		$count = count($categoryLinks);
+
+		if ($count > 10) {
+			$countPerRow = intval($count / 4);
+			$countPerRow = !$countPerRow ? 1 : $countPerRow;
+		} elseif ($count > 5) {
+			$countPerRow = intval($count / 2);
+			$countPerRow = !$countPerRow ? 1 : $countPerRow;
+		} else {
+			$countPerRow = $count;
+		}
+
+
+		foreach ($categoryLinks as $index => $childCategory) {
 
 			$pathLink = [];
 			$pathLink[] = $baseLink;
@@ -216,15 +236,32 @@ class MainController extends Controller
 			$pathLink = array_filter($pathLink);
 			$pathLink = implode('/', $pathLink);
 
-			if ($prevCategory && $prevCategory->priority > 0 && $childCategory->priority === 0) {
-				$table->addRow(['&nbsp;']);
+			if ($index % $countPerRow == 0) {
+				$y++;
+				$x = 0;
 			}
 
-			$table->addRow([$this->getLink($childCategory->name, $pathLink)]);
+			$pre = '';
 
-			$prevCategory = $childCategory;
+			$data[$x++][$y] = $pre.$this->getLink($childCategory->name, $pathLink);
+
+//			$table->addRow([$this->getLink($childCategory->name, $pathLink)]);
+//			$prevCategory = $childCategory;
 		}
-		$table->render();
+
+
+		foreach ($data as $datum) {
+			$table->addRow($datum);
+		}
+
+		echo '<style>
+	.xxx > tbody >tr >td {
+		width: 200px;
+	}
+</style>';
+
+		$table->addAttribute('class', 'xxx')->render();
+
 
 		return $this;
 	}
