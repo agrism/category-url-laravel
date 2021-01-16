@@ -17,7 +17,7 @@ class Category extends Model
 
 	private static function init()
 	{
-		if(!self::$categories){
+		if (!self::$categories) {
 			self::$categories = self::$categories = static::getDbData();
 			return;
 		}
@@ -28,8 +28,9 @@ class Category extends Model
 		}
 	}
 
-	private static function getDbData(){
-		return Cache::rememberForever('cat_db', function (){
+	private static function getDbData()
+	{
+		return Cache::rememberForever('cat_db', function () {
 			return DB::table('categories')->get();
 		});
 	}
@@ -75,6 +76,16 @@ class Category extends Model
 		$cat->name = null;
 		$cat->priority = 0;
 		return $cat;
+	}
+
+	public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+	{
+		return $this->belongsTo(Category::class, 'parent_id', 'id');
+	}
+
+	public function properties()
+	{
+		return $this->belongsToMany(Category::class, 'category_properties', 'category_id', 'category_property_id');
 	}
 }
 

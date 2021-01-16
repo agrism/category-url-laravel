@@ -6,6 +6,7 @@ use Agrism\PhpHtml\Builder\Element;
 use Agrism\PhpHtml\Table\Table;
 use App\Models\Category;
 use App\Models\Path;
+use App\Services\Helper;
 use App\Services\NextCategory;
 use App\Services\Value;
 use Illuminate\Support\Facades\Cache;
@@ -69,28 +70,16 @@ class MainController extends Controller
 
 		$path = [];
 
-		$result[] = $this->getLink('Home', '');
+		$result[] = Helper::factory()->getLink('Home', '');
 
 		foreach ($categories as $category) {
 
 			$path[] = $category->name;
 
-			$result[] = $this->getLink($category->name, implode('/', $path));
+			$result[] = Helper::factory()->getLink($category->name, implode('/', $path));
 		}
 
 		return $result;
-	}
-
-	public function getLink(string $name, $path = '/'): string
-	{
-		$return = [];
-		$return[] = '<a href="/';
-		$return[] = $path;
-		$return[] = '">';
-		$return[] = $name;
-		$return[] = '</a>';
-
-		return implode('', $return);
 	}
 
 	/*** @return $this */
@@ -243,7 +232,7 @@ class MainController extends Controller
 
 			$pre = '';
 
-			$data[$x++][$y] = $pre.$this->getLink($childCategory->name, $pathLink);
+			$data[$x++][$y] = $pre.Helper::factory()->getLink($childCategory->name, $pathLink);
 
 //			$table->addRow([$this->getLink($childCategory->name, $pathLink)]);
 //			$prevCategory = $childCategory;

@@ -299,6 +299,10 @@ class RealEstate extends AbstractCategories
 			'vitinu-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
 			'zebrenes-pag' => ['parent_id' => 'region-dobele', 'priority' => 0],
 			'cits-dobeles' => ['parent_id' => 'region-dobele', 'priority' => -1],
+
+
+			// - rooms
+
 		]);
 	}
 
@@ -350,5 +354,8 @@ class RealEstate extends AbstractCategories
 			}
 			$this->categorySeeder->createPath('path_real_flats_', $data);
 		}
+
+		$this->categorySeeder->addCategoryProperty('flats', 'rooms');
+		$this->categorySeeder->addCategoryProperty('flats', 'flat-series');
 	}
 }

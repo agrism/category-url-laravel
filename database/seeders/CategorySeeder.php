@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Database\Seeders\Categories\Color;
 use Database\Seeders\Categories\RealEstate;
+use Database\Seeders\Categories\RealEstateFlatSeries;
+use Database\Seeders\Categories\RealEstateRoom;
+use Database\Seeders\Categories\RealEstateRooms;
 use Database\Seeders\Categories\Root;
 use Database\Seeders\Categories\Transport;
 use Database\Seeders\Categories\Work;
@@ -25,6 +28,8 @@ class CategorySeeder extends Seeder
 		$handlers = [
 			Root::factory($this),
 			Color::factory($this),
+			RealEstateRoom::factory($this),
+			RealEstateFlatSeries::factory($this),
 			RealEstate::factory($this),
 			Transport::factory($this),
 			Work::factory($this),
@@ -137,4 +142,10 @@ class CategorySeeder extends Seeder
 		}
 	}
 
+	public function addCategoryProperty(string $categoryName, string $propertyCategoryName){
+		DB::table('category_properties')->insert([
+			'category_id' => $this->getCategoryIdByName($categoryName),
+			'category_property_id' => $this->getCategoryIdByName($propertyCategoryName),
+		]);
+	}
 }
