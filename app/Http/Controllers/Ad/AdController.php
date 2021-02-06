@@ -34,7 +34,7 @@ class AdController extends Controller
 
 		$links[] = Helper::factory()->getLink('Home', 'ad');
 
-		$table->addRow([implode(' &raquo; ', array_reverse($links))], ['style' => 'background-color:yellow']);
+		$table->addRow([implode(' &raquo; ', array_reverse($links))], ['class' => 'parent-y']);
 
 		foreach ($categs->all() as $index => $cat) {
 			$table->addRow([Helper::factory()->getLink($cat->name, 'ad?catId='.$cat->id)]);
@@ -80,27 +80,30 @@ class AdController extends Controller
 	private function renderStyle()
 	{
 		echo '<style>
+	tr.parent-y * {
+		background-color: yellow;
+	}
     table {
-    border-width: 1px;
-    border-spacing: 0px;
-    border-style: solid;
-    border-color: black;
-    border-collapse: separate;
-    background-color: white;
+		border-width: 1px;
+		border-spacing: 0px;
+		border-style: solid;
+		border-color: black;
+		border-collapse: separate;
+		background-color: white;
     }
     table th {
-    border-width: 1px;
-    padding: 3px;
-    border-style: solid;
-    border-color: black;
-    background-color: white;
+		border-width: 1px;
+		padding: 3px;
+		border-style: solid;
+		border-color: black;
+		background-color: white;
     }
     table td {
-    border-width: 1px;
-    padding: 3px;
-    border-style: solid;
-    border-color: black;
-    background-color: white;
+		border-width: 1px;
+		padding: 3px;
+		border-style: solid;
+		border-color: black;
+		background-color: white;
     }
 </style>';
 	}
