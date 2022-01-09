@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\CategoryPropery;
 use App\Services\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdController extends Controller
 {
@@ -16,6 +17,8 @@ class AdController extends Controller
 
 	public function index(Request $request)
 	{
+		Log::debug('12333323232323');
+
 		$this->categories = Category::all();
 
 		$this->renderStyle();

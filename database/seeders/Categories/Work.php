@@ -330,53 +330,57 @@ class Work extends AbstractCategories
 
 	public function generatePath()
 	{
-		$root_work = [
-			'root' => [$this->categorySeeder->getCategoryIdByName('work')],
-		];
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'are-required')
+                             ->addRouteFragment('vacancy')
+                             ->createRoute('root_work_are-required');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('are-required')],
-			'vacancy' => $this->categorySeeder->getChildrenCategoriesIdsByName('vacancy'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'i-search-for-work')
+                             ->addRouteFragment('vacancy')
+                             ->createRoute('root_work_i-search-for-work');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('i-search-for-work')],
-			'vacancy' => $this->categorySeeder->getChildrenCategoriesIdsByName('vacancy'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'courses-education')
+                             ->addRouteFragment('courses-education')
+                             ->createRoute('root_work_courses-education');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('courses-education')],
-			'courses-education' => $this->categorySeeder->getChildrenCategoriesIdsByName('courses-education'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'business-contacts')
+                             ->addRouteFragment('business-contacts')
+                             ->createRoute('root_work_business-contacts');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('business-contacts')],
-			'business-contacts' => $this->categorySeeder->getChildrenCategoriesIdsByName('business-contacts'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'legal-services')
+                             ->addRouteFragment('legal-services')
+                             ->createRoute('root_work_legal-services');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('legal-services')],
-			'legal-services' => $this->categorySeeder->getChildrenCategoriesIdsByName('legal-services'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'finances')
+                             ->addRouteFragment('finances')
+                             ->createRoute('root_work_finances');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('finances')],
-			'finances' => $this->categorySeeder->getChildrenCategoriesIdsByName('finances'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'text-translations')
+                             ->addRouteFragment('text-translations')
+                             ->createRoute('root_work_text-translations');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('text-translations')],
-			'text-translations' => $this->categorySeeder->getChildrenCategoriesIdsByName('text-translations'),
-		]));
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'internet-services')
+                             ->addRouteFragment('internet-services')
+                             ->createRoute('root_work_internet-services');
 
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('internet-services')],
-			'internet-services' => $this->categorySeeder->getChildrenCategoriesIdsByName('internet-services'),
-		]));
-
-		$this->categorySeeder->createPath('path_3', array_merge($root_work, [
-			'work' => [$this->categorySeeder->getCategoryIdByName('other-work')],
-		]));
-
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'work')
+                             ->addRouteFragment('work', 'other-work')
+                             ->createRoute('root_work_other-work');
 	}
 }

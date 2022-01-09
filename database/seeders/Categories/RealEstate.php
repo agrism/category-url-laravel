@@ -308,54 +308,52 @@ class RealEstate extends AbstractCategories
 
 	public function generatePath()
 	{
-		$regionsData = [
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-riga')],
-				'region-riga' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-riga'),
-				'riga' => $this->categorySeeder->getChildrenCategoriesIdsByName('riga'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-aluksne')],
-				'region-aluksne' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-aluksne'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-balvi')],
-				'region-balvi' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-balvi'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-aizkraukle')],
-				'region-aizkraukle' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-aizkraukle'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-bauska')],
-				'region-bauska' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-bauska'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-cesis')],
-				'region-cesis' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-cesis'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-daugavpils')],
-				'region-daugavpils' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-daugavpils'),
-			],
-			[
-				'regions' => [$this->categorySeeder->getCategoryIdByName('region-dobele')],
-				'region-dobele' => $this->categorySeeder->getChildrenCategoriesIdsByName('region-dobele'),
-			],
-		];
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'flats')
+                             ->addRouteFragment('flat-series')
+                             ->addRouteFragment('rooms')
+                             ->addRouteFragment('regions')
+                             ->createRoute('real_flats_regions');
 
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'flats')
+                             ->addRouteFragment('flat-series')
+                             ->addRouteFragment('rooms')
+                             ->addRouteFragment('regions', 'region-riga')
+                             ->addRouteFragment('region-riga')
+                             ->createRoute('real_flats_regions_riga');
 
-		foreach ($regionsData as $regions) {
-			$data = [];
-			$data['root'] = [$this->categorySeeder->getCategoryIdByName('real-estate')];
-			$data['real-estate'] = $this->categorySeeder->getChildrenCategoriesIdsByName('real-estate');
-			foreach ($regions as $key => $val) {
-				$data[$key] = $val;
-			}
-			$this->categorySeeder->createPath('path_real_flats_', $data);
-		}
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'flats')
+                             ->addRouteFragment('flat-series')
+                             ->addRouteFragment('rooms')
+                             ->addRouteFragment('regions', 'region-riga')
+                             ->addRouteFragment('region-riga', 'riga')
+                             ->addRouteFragment('riga')
+                             ->createRoute('real_flats_regions_riga_riga');
 
-		$this->categorySeeder->addCategoryProperty('flats', 'rooms');
-		$this->categorySeeder->addCategoryProperty('flats', 'flat-series');
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'homes')
+                             ->addRouteFragment('regions', null)
+                             ->createRoute('real_homes_regions');
+
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'homes')
+                             ->addRouteFragment('regions', 'region-riga')
+                             ->addRouteFragment('region-riga', null)
+                             ->createRoute('real_homes_regions_riga');
+
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'real-estate')
+                             ->addRouteFragment('real-estate', 'homes')
+                             ->addRouteFragment('regions', 'region-riga')
+                             ->addRouteFragment('region-riga', 'riga')
+                             ->addRouteFragment('riga',)
+                             ->createRoute('real_homes_regions_riga_distr');
 	}
 }

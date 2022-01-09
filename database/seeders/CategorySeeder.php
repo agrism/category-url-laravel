@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Http\Request;
 use Database\Seeders\Categories\Color;
+use Database\Seeders\Categories\Paths;
+use App\Http\Controllers\MainController1;
 use Database\Seeders\Categories\RealEstate;
 use Database\Seeders\Categories\RealEstateFlatSeries;
 use Database\Seeders\Categories\RealEstateRoom;
@@ -33,6 +36,8 @@ class CategorySeeder extends Seeder
 			RealEstate::factory($this),
 			Transport::factory($this),
 			Work::factory($this),
+
+			Paths::factory($this),
 		];
 
 		foreach ($handlers as $handler){
@@ -47,6 +52,8 @@ class CategorySeeder extends Seeder
 
 		Cache::pull('cat_db');
 		Cache::pull('cat_path');
+
+        (new MainController1(new Request()))->createCats();
 
 	}
 
@@ -116,30 +123,30 @@ class CategorySeeder extends Seeder
 //			]
 //		];
 
-		$pathId = DB::table('paths')->insertGetId([
-			'name' => $name,
-		]);
-
-
-		foreach ($data as $keyName => $catIds) {
-			// 1.element
-
-			if(!$this->getCategoryIdByName($keyName)){
-				dd('cat not found: "'.$keyName. '" '.__FILE__.':'.__LINE__);
-			}
-
-			$pathElementId = DB::table('path_elements')->insertGetId([
-				'path_id' => $pathId,
-				'category_id' => $this->getCategoryIdByName($keyName),
-			]);
-
-			foreach ($catIds as $catId) {
-				$path_element_should_be_selected_categoriesId = DB::table('path_element_should_be_selected_categories')->insertGetId([
-					'path_element_id' => $pathElementId,
-					'category_id' => $catId,
-				]);
-			}
-		}
+		// $pathId = DB::table('paths')->insertGetId([
+		// 	'name' => $name,
+		// ]);
+        //
+        //
+		// foreach ($data as $keyName => $catIds) {
+		// 	// 1.element
+        //
+		// 	if(!$this->getCategoryIdByName($keyName)){
+		// 		dd('cat not found: "'.$keyName. '" '.__FILE__.':'.__LINE__);
+		// 	}
+        //
+		// 	$pathElementId = DB::table('path_elements')->insertGetId([
+		// 		'path_id' => $pathId,
+		// 		'category_id' => $this->getCategoryIdByName($keyName),
+		// 	]);
+        //
+		// 	foreach ($catIds as $catId) {
+		// 		$path_element_should_be_selected_categoriesId = DB::table('path_element_should_be_selected_categories')->insertGetId([
+		// 			'path_element_id' => $pathElementId,
+		// 			'category_id' => $catId,
+		// 		]);
+		// 	}
+		// }
 	}
 
 	public function addCategoryProperty(string $categoryName, string $propertyCategoryName){
@@ -148,4 +155,37 @@ class CategorySeeder extends Seeder
 			'category_property_id' => $this->getCategoryIdByName($propertyCategoryName),
 		]);
 	}
+
+    private $route = [];
+
+    public function clearRoute(): self{
+        $this->route = [];
+        return $this;
+    }
+
+    public function addRouteFragment(string $parentCatName, ?string $selectedChildName = null, int $deep=1, ?float $order = null): self
+    {
+        $this->route[] = [
+            'route_id' => null,
+            'parent_category_id' => $this->getCategoryIdByName($parentCatName),
+            'selected_child_category_id' => $selectedChildName ? $this->getCategoryIdByName($selectedChildName) : null,
+            'deep' => $deep,
+            'order' => $order,
+        ];
+        return $this;
+    }
+
+    public function createRoute(string $name): self
+    {
+        $id = DB::table('routes')->insertGetId([
+            'name' =>$name,
+        ]);
+
+        foreach ($this->route as &$route){
+            $route['route_id'] = $id;
+            DB::table('route_fragments')->insert($route);
+        }
+
+        return $this->clearRoute();
+    }
 }

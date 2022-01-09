@@ -90,7 +90,7 @@ class MainController extends Controller
 			return $this;
 		}
 
-		$paths = Cache::remember('cat_path', 60, function () {
+		$paths = Cache::remember('cat_path', 1, function () {
 			return Path::with('pathElements.shouldBeSelected.category')
 				->with('pathElements.category')
 				->get();

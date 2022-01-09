@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class AddAdController extends Controller
 {
-
+	public function index(){
+		dump(__METHOD__);
+	}
 }
