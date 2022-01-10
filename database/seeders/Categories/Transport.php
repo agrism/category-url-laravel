@@ -41,7 +41,52 @@ class Transport extends AbstractCategories
             'Passat' => 'vw',
 
 
-            'lorry' => 'transport',
+            'cargo-cars' => 'transport',
+            'asphalt-pavers' => 'cargo-cars',
+            'dump-truck' => 'cargo-cars',
+            'busses' => 'cargo-cars',
+            'tank-lorry' => 'cargo-cars',
+            'lorry-loader' => 'cargo-cars',
+            'auto-car' => 'cargo-cars',
+            'crane-truck' => 'cargo-cars',
+            'car-lift' => 'cargo-cars',
+            'cartower' => 'cargo-cars',
+            'car-truck' => 'cargo-cars',
+            'road-train' => 'cargo-cars',
+            'concrete-stacker' => 'cargo-cars',
+            'concrete-mixer' => 'cargo-cars',
+            'buldozer' => 'cargo-cars',
+            'rollers' => 'cargo-cars',
+            'cement-trucks' => 'cargo-cars',
+            'petrol-fillers' => 'cargo-cars',
+            'excavators-crawler' => 'cargo-cars',
+            'excavators-wheeled' => 'cargo-cars',
+            'excavators' => 'cargo-cars',
+            'vans' => 'cargo-cars',
+            'gas-trucks' => 'cargo-cars',
+            'grader' => 'cargo-cars',
+            'loaders-front' => 'cargo-cars',
+            'campings' => 'cargo-cars',
+            'tree-trucks' => 'cargo-cars',
+            'container-trucks' => 'cargo-cars',
+            'cranes' => 'cargo-cars',
+            'microvans' => 'cargo-cars',
+            'mini-trucks' => 'cargo-cars',
+            'tip-up-lorry' => 'cargo-cars',
+            'trailerss' => 'cargo-cars',
+            'milk-trucks' => 'cargo-cars',
+            'refrigerators' => 'cargo-cars',
+            'scrappers' => 'cargo-cars',
+            'lorries' => 'cargo-cars',
+            'taxi' => 'cargo-cars',
+            'towers' => 'cargo-cars',
+            'mini-tractors' => 'cargo-cars',
+            'crawler-tractors' => 'cargo-cars',
+            'wheeled-tractors' => 'cargo-cars',
+            'trailers' => 'cargo-cars',
+            'towing-cranes' => 'cargo-cars',
+            'off-road-vehicle' => 'cargo-cars',
+            'others' => 'cargo-cars',
         ]);
     }
 
@@ -61,5 +106,11 @@ class Transport extends AbstractCategories
                              ->addRouteFragment('car', 'bmw')
                              ->addRouteFragment('bmw', )
                              ->createRoute('transport_car_color_bmw');
+
+        $this->categorySeeder->clearRoute()
+                             ->addRouteFragment('root', 'transport')
+                             ->addRouteFragment('transport', 'cargo-cars')
+                             ->addRouteFragment('cargo-cars')
+                             ->createRoute('transport_cargo-cars');
     }
 }
