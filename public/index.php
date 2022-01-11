@@ -53,3 +53,9 @@ $response = tap($kernel->handle(
 ))->send();
 
 $kernel->terminate($request, $response);
+
+if(defined('LARAVEL_START')){
+    echo ROUND(microtime(true) - LARAVEL_START,3);
+} else {
+    echo 'not defined!';
+}

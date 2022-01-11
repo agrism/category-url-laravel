@@ -23,3 +23,12 @@ Blade [{{count($paths)}}]
         @endforeach
     </td></tr>
 </table>
+
+<hr>
+
+<?php
+    // if(defined('LARAVEL_START')){
+    //     echo ROUND(microtime(true) - LARAVEL_START,3);
+    // } else {
+    //     echo 'not defined!';
+    // }
