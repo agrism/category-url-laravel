@@ -15,9 +15,9 @@ class CreateRealPathTable extends Migration
     {
         Schema::create('real_paths', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->string('path')->index();
             $table->boolean('is_final')->default(false);
-            $table->integer('parent_id')->nullable();
+            $table->integer('parent_id')->nullable()->index();
             $table->timestamps();
         });
     }

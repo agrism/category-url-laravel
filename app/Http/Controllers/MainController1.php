@@ -90,8 +90,8 @@ class MainController1 extends Controller
         echo '<table border="1">';
         echo '<tr>';
         echo '<td>';
-        dump(array_values($this->cats)[0] );
-        dump($this->routes);
+        // dump(array_values($this->cats)[0] );
+        // dump($this->routes);
 
 
         $routesParts = [];
@@ -214,12 +214,14 @@ class MainController1 extends Controller
 
         echo '<td style="width: 600px;">';
         // echo 1;
-        dump($routesParts);
-        dump($p);
+        // dump($routesParts);
+        // dump($p);
         // dump($newP);
 
         // need to add inter paths, not final paths
 
+
+        dump('START need to add inter paths, not final paths');
 
         $newP_v2 = [];
 
@@ -255,16 +257,36 @@ class MainController1 extends Controller
             }
         }
 
-        dump($newP_v2);
+        // dump($newP_v2);
+
+        dump('END need to add inter paths, not final paths');
+
 
 
 
         DB::table('real_paths')->truncate();
         DB::table('real_path_data')->truncate();
 
+
+        dump('start insert real_path_data');
+
         $now = Carbon::now();
 
+        $start1 = microtime(1);
+        $c1= 0;
+        $c2= 0;
+        $part = 10;
+        $oneTenth = ROUND(count($newP_v2) / $part,0);
+
+
         foreach ($newP_v2 as $path => $data){
+            if($c1 === 0 || ($c1 % $oneTenth === 0)){
+                dump($c2.'% passed, length: '.ROUND((microtime(1) - $start1),2) );
+                $c2 = $c2 + $part;
+            }
+            $c1++;
+
+
             $realPathId = DB::table('real_paths')->insertGetId([
                 'path' => $path,
                 'is_final' => isset($newP[$path]) ? true : false,
@@ -288,49 +310,75 @@ class MainController1 extends Controller
             DB::table('real_path_data')->insert($inserts);
         }
 
-        $realPaths = DB::table('real_paths')->get();
+        dump('end insert real_path_data');
 
-        foreach ($realPaths as $key => $path){
 
-            $pathExploded = array_values(array_filter(explode('/',$path->path)));
+        $start = microtime(1);
 
-            foreach ($realPaths as $key2 => $path2){
-                $pathExploded2 = array_values(array_filter(explode('/',$path2->path)));
+        dump('start insert parent path ids');
 
-                if( (count($pathExploded) + 1) === count($pathExploded2)){
+        { // add parent path ids
 
-                    $isChild = false;
+            $realPaths = DB::table('real_paths')->get();
 
-                    foreach (range(0, (count($pathExploded)-1) ) as $index){
+            $count = $realPaths->count();
+            dump('total paths: '.$count);
 
-                        if(!$one = $pathExploded[$index] ?? null){
-                            dd([
-                                '$pathExploded' => $pathExploded,
-                                '$index' => $index,
-                            ]);
+            $part = 10;
+            $oneTenth = round($count / $part, 0);
+            $c1 = 0;
+            $c2 = 0;
+
+            foreach ($realPaths as $key => $path) {
+
+                if( $c1===0 || ($c1 % $oneTenth === 0)){
+                    dump($c2.'% passed, length: '.ROUND((microtime(1) - $start),2) );
+                    $c2 = $c2 + $part;
+                }
+                $c1++;
+
+                $pathExploded = array_values(array_filter(explode('/', $path->path)));
+
+                foreach ($realPaths as $key2 => $path2) {
+                    $pathExploded2 = array_values(array_filter(explode('/', $path2->path)));
+
+                    if ((count($pathExploded) + 1) === count($pathExploded2)) {
+
+                        $isChild = false;
+
+                        foreach (range(0, (count($pathExploded) - 1)) as $index) {
+
+                            if (!$one = $pathExploded[$index] ?? null) {
+                                dd([
+                                    '$pathExploded' => $pathExploded,
+                                    '$index' => $index,
+                                ]);
+                            }
+
+                            if (!$two = $pathExploded2[$index] ?? null) {
+                                dd([
+                                    '$pathExploded2' => $pathExploded2,
+                                    '$index' => $index,
+                                ]);
+                            }
+
+                            if ($one === $two) {
+                                $isChild = true;
+                            } else {
+                                $isChild = false;
+                                break;
+                            }
                         }
 
-                        if(!$two = $pathExploded2[$index] ?? null){
-                            dd([
-                                '$pathExploded2' => $pathExploded2,
-                                '$index' => $index,
-                            ]);
+                        if ($isChild) {
+                            DB::table('real_paths')->whereId($path2->id)->update(['parent_id' => $path->id]);
                         }
-
-                        if($one === $two){
-                            $isChild = true;
-                        } else{
-                            $isChild = false;
-                            break;
-                        }
-                    }
-
-                    if($isChild){
-                        DB::table('real_paths')->whereId($path2->id)->update(['parent_id'=>$path->id]);
                     }
                 }
             }
         }
+
+        dump('finish insert parent path ids, length: '.(microtime(1)-$start));
 
 
         echo '</td>';

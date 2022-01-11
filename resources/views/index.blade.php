@@ -1,4 +1,4 @@
-Blade
+Blade [{{count($paths)}}]
 
 <ul>
     @foreach($breadCrumb ?? [] as $item)
@@ -10,7 +10,6 @@ Blade
 
 
 <table border="0">
-{{--    <td style="vertical-align: top; width: 180px;">--}}
         @foreach($paths ?? [] as $index => $path)
 
             @if($index % 30 === 0)
