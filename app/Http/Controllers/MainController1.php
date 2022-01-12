@@ -152,7 +152,7 @@ class MainController1 extends Controller
                 if(count($prevBuffer) === 0){
                     foreach ($explodedParts as $explodedPart){
 
-                        // $prev[] = $explodedPart->name;
+                        // $prev[] = $explodedPart->name; - test
                         $prev[] = [
                             'path' => '/'.$explodedPart->name,
                             'data' => [
