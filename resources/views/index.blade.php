@@ -24,6 +24,13 @@ Blade [{{count($paths)}}]
     </td></tr>
 </table>
 
+
+<ul>
+    @foreach ($ads as $ad)
+        <li>{{ $ad->id }}</li>
+    @endforeach
+</ul>
+
 <hr>
 
 <?php

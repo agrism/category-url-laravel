@@ -16,18 +16,42 @@ class MainController1 extends Controller
 
     public function index(Request $request, ?string $any = null){
         $u = $request->segments();
+        $ads = [];
 
         if(!$any){
             $paths = DB::table('real_paths')->where('parent_id', $any)->get();
         } else {
             $any = '/'.$any;
 
-            if(!$path = DB::table('real_paths')->where('path', $any)->first()){
-                dd('path not found!');
-            }
+            if(!$parent = DB::table('real_paths')->where('path', $any)->first()){
+                header("Location: /");
+                exit;
+            } else {
+                $paths = DB::table('real_paths')->where('parent_id', $parent->id)->get();
+                if($parent->is_final){
 
-            $paths = DB::table('real_paths')->where('parent_id', $path->id)->get();
+                    $parentData = DB::table('real_path_data')->where('real_path_id', $parent->id)->get();
+
+                    foreach($parentData as $parntDataItem){
+
+                        dump($parntDataItem);
+
+                        DB::table('ad_data')
+                        ->where('category_property_id', $parntDataItem->category_parent_id)
+                        ->where('category_value_id', $parntDataItem->category_children_id)
+                        // ->leftJoin('ad', '')
+                        ->get()->each(function($item) use(&$ads){
+                            $ads[] = $item;
+                        });
+                    }
+
+                }
+            }
         }
+
+
+        dump($ads);
+
 
 
         $viewPaths = [];
@@ -66,17 +90,18 @@ class MainController1 extends Controller
         return view('index', [
             'paths' => $viewPaths,
             'breadCrumb' =>$breadCrumb,
+            'ads'=>$ads,
         ]);
     }
 
 
     public function createCats(){
 
-        \DB::table('categories')->get()->each(function($cat){
+        DB::table('categories')->get()->each(function($cat){
             $this->cats[$cat->id] = $cat;
         });
 
-        \DB::table('route_fragments')->get()->each(function($fragment){
+        DB::table('route_fragments')->get()->each(function($fragment){
 
             $buffer = $fragment;
 
@@ -390,7 +415,7 @@ class MainController1 extends Controller
 
     public function index1(){
 
-        \DB::table('categories')->get()->each(function($cat){
+    DB::table('categories')->get()->each(function($cat){
             $this->cats[$cat->id] = $cat;
         });
 
@@ -399,7 +424,7 @@ class MainController1 extends Controller
 
         $routes = [];
 
-        \DB::table('routes')
+        DB::table('routes')
             ->selectRaw('routes.id, route_fragments.parent_category_id, route_fragments.deep, route_fragments.selected_child_category_id')
             // ->selectRaw('routes.id, route_fragments.deep, route_fragments.selected_child_category_id')
             ->leftJoin('route_fragments', 'routes.id', '=', 'route_fragments.route_id')
