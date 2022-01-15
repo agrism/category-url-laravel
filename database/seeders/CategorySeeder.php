@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Database\Seeders\Categories\Color;
 use Database\Seeders\Categories\Paths;
 use App\Http\Controllers\MainController1;
+use Database\Seeders\Categories\Ads;
 use Database\Seeders\Categories\RealEstate;
 use Database\Seeders\Categories\RealEstateFlatSeries;
 use Database\Seeders\Categories\RealEstateRoom;
-use Database\Seeders\Categories\RealEstateRooms;
 use Database\Seeders\Categories\Root;
 use Database\Seeders\Categories\Transport;
 use Database\Seeders\Categories\Work;
@@ -38,6 +38,7 @@ class CategorySeeder extends Seeder
 			Work::factory($this),
 
 			Paths::factory($this),
+            Ads::factory($this),
 		];
 
 		foreach ($handlers as $handler){
@@ -52,9 +53,6 @@ class CategorySeeder extends Seeder
 
 		Cache::pull('cat_db');
 		Cache::pull('cat_path');
-
-        (new MainController1(new Request()))->createCats();
-
 	}
 
 	public function getCategoryIdByName(string $name)
@@ -109,44 +107,6 @@ class CategorySeeder extends Seeder
 	public function createPath($name, $data)
 	{
 
-//		$data = [
-//			'root' => [
-//				2, //'transport'
-//			],
-//			'color' => [
-//				4,//'blue',
-//				5,//'red',
-//			],
-//			'transport' => [
-//				3,//'car',
-//				6,//'lorry',
-//			]
-//		];
-
-		// $pathId = DB::table('paths')->insertGetId([
-		// 	'name' => $name,
-		// ]);
-        //
-        //
-		// foreach ($data as $keyName => $catIds) {
-		// 	// 1.element
-        //
-		// 	if(!$this->getCategoryIdByName($keyName)){
-		// 		dd('cat not found: "'.$keyName. '" '.__FILE__.':'.__LINE__);
-		// 	}
-        //
-		// 	$pathElementId = DB::table('path_elements')->insertGetId([
-		// 		'path_id' => $pathId,
-		// 		'category_id' => $this->getCategoryIdByName($keyName),
-		// 	]);
-        //
-		// 	foreach ($catIds as $catId) {
-		// 		$path_element_should_be_selected_categoriesId = DB::table('path_element_should_be_selected_categories')->insertGetId([
-		// 			'path_element_id' => $pathElementId,
-		// 			'category_id' => $catId,
-		// 		]);
-		// 	}
-		// }
 	}
 
 	public function addCategoryProperty(string $categoryName, string $propertyCategoryName){
@@ -187,5 +147,32 @@ class CategorySeeder extends Seeder
         }
 
         return $this->clearRoute();
+    }
+
+    private $add =[];
+
+    public function clearAd(): self{
+        $this->add = [];
+        return $this;
+    }
+
+    public function addAdCategory(string $parentCatName, string $selectedChildName):self{
+        $this->add[] = [
+            'category_property_id' => $this->getCategoryIdByName($parentCatName),
+            'category_value_id' => $this->getCategoryIdByName($selectedChildName),
+        ];
+        return $this;
+    }
+
+    public function createAd(string $body): self{
+        $id = DB::table('ads')->insertGetId([
+            'body'=> $body,
+        ]);
+
+        foreach($this->add as &$ad){
+            $ad['ad_id'] = $id;
+            DB::table('ad_data')->insert($ad);
+        }
+        return $this;
     }
 }

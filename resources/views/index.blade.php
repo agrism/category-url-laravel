@@ -27,15 +27,15 @@ Blade [{{count($paths)}}]
 
 <ul>
     @foreach ($ads as $ad)
-        <li>{{ $ad->id }}</li>
+        <li>{{ json_encode(array_values($ad)[0]->body)}}</li>
     @endforeach
 </ul>
 
 <hr>
 
 <?php
-    // if(defined('LARAVEL_START')){
-    //     echo ROUND(microtime(true) - LARAVEL_START,3);
-    // } else {
-    //     echo 'not defined!';
-    // }
+    if(defined('LARAVEL_START')){
+        echo ROUND(microtime(true) - LARAVEL_START,3);
+    } else {
+        echo 'not defined!';
+    }

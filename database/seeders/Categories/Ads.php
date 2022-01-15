@@ -4,18 +4,19 @@
 namespace Database\Seeders\Categories;
 
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\MainController1;
-
-class Paths extends AbstractCategories
+class Ads extends AbstractCategories
 {
 	public function addData(&$data = [])
 	{
+    }
 
-	}
 
 	public function generatePath()
 	{
 
-	}
+        dump('start add ads');
+
+        dump('end add ads');
+    }
+
 }

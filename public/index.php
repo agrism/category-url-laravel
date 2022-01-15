@@ -54,6 +54,7 @@ $response = tap($kernel->handle(
 
 $kernel->terminate($request, $response);
 
+echo '<hr>';
 if(defined('LARAVEL_START')){
     echo ROUND(microtime(true) - LARAVEL_START,3);
 } else {
