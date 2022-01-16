@@ -17,9 +17,20 @@ class MainController1 extends Controller
     public function index(Request $request, ? string $any = null){
         $u = $request->segments();
 
+        $lastSegment = end($u);
+
+        if($lastSegment == 'add'){
+            return $this->createAdd($any);
+        } elseif(is_numeric($lastSegment)){
+            return $this->show($any);
+        }
+
         $cachedAds = [];
 
-        DB::table('ads')->select(['ads.id','ads.body','ad_data.category_property_id', 'ad_data.category_value_id'])->leftJoin('ad_data', 'ads.id', '=', 'ad_data.ad_id')->get()->each(function($item) use(&$cachedAds){
+        DB::table('ads')->select(['ads.id','ads.body','ad_data.category_property_id', 'ad_data.category_value_id'])
+        ->leftJoin('ad_data', 'ads.id', '=', 'ad_data.ad_id')
+        ->get()
+        ->each(function($item) use(&$cachedAds){
             $cachedAds[$item->id][$item->category_property_id] = $item;
         });
 
@@ -53,10 +64,23 @@ class MainController1 extends Controller
 
                             return $valid;
                         });
+
+
                     }
 
                     if($parentData->count()){
                         $ads = ($cachedAds);
+
+                        $ads = array_map(function($i) use($any){
+                            $firstElement = array_shift($i);
+
+                            return [
+                                'body' => $firstElement->body,
+                                'href' => $any.'/'.$firstElement->id,
+                            ];
+                        }, $ads);
+
+                        // dump($ads);
                     }
 
                 }
@@ -101,6 +125,92 @@ class MainController1 extends Controller
             'breadCrumb' =>$breadCrumb,
             'ads'=>$ads,
         ]);
+    }
+
+    public function show(string $path){
+        $segments = explode('/', $path);
+        $lastSegment = array_pop($segments);
+
+        if(!is_numeric($lastSegment)){
+            dd('ad id is not valid');
+        }
+        if(!$ad = DB::table('ads')->where('id', $lastSegment)->first()){
+            dd('ad not found!');
+        }
+
+        $breadCrumb = [
+            [
+                'text' => 'home',
+                'href' => '/',
+            ]
+        ];
+
+        $exploded = array_filter($segments);
+
+        $prev = '';
+        foreach ( $exploded as $path){
+            $prev .= '/'.$path;
+            $breadCrumb[] = [
+                'text' => $path,
+                'href' => $prev,
+            ];
+        }
+
+        // dump($breadCrumb);
+
+        return view('show', [
+            'ad' => $ad,
+            'backPath' => '/'.implode('/', $exploded),
+            'breadCrumb' => $breadCrumb,
+        ]);
+    }
+
+
+    public function createAdd(?string $path){
+
+        $path = '/'.$path;
+        $strLen = strlen('/add');
+        $pathWithoutPostficAdd = substr($path,0,  -$strLen);
+
+        $segments = explode('/',$pathWithoutPostficAdd);
+        $lastSegment= array_pop($segments);
+        if(is_numeric($lastSegment)){
+            $pathWithoutPostficAdd = implode('/', $segments);
+        }
+
+        $pathRecord = DB::table('real_paths')->where('path', $pathWithoutPostficAdd)->first();
+
+        $pathData = DB::table('real_path_data')->where('real_path_id', $pathRecord->id)->get();
+
+        return view('create-ad',[
+            'path'=>$path,
+        ]);
+    }
+
+    public function storeAd(Request $request){
+
+        $path = $request->get('path');
+
+        $path = substr($path, 0, -4);
+
+
+        $pathRecord  = DB::table('real_paths')->where('path', $path)->first();
+
+        $pathRecordData = DB::table('real_path_data')->where('real_path_id', $pathRecord->id)->get();
+
+        $adId = DB::table("ads")->insertGetId([
+            'body' => $request->get('body'),
+        ]);
+
+        foreach($pathRecordData as $item){
+            $r = DB::table('ad_data')->insert([
+                'ad_id' => $adId,
+                'category_property_id' => $item->category_parent_id,
+                'category_value_id' => $item->category_children_id,
+            ]);
+        }
+
+        return redirect()->to($path);
     }
 
 

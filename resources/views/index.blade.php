@@ -1,12 +1,6 @@
-Blade [{{count($paths)}}]
+<div style="position: fixed;top: 50px; right:10px;background-color:magenta;padding:4px;border-radius:4px;">Blade [{{count($paths)}}]</div>
 
-<ul>
-    @foreach($breadCrumb ?? [] as $item)
-        <a href="{{$item['href']}}">{{$item['text']}}</a> /
-    @endforeach
-</ul>
-
-<hr>
+@include('includes.breadcrumb')
 
 
 <table border="0">
@@ -25,11 +19,15 @@ Blade [{{count($paths)}}]
 </table>
 
 
-<ul>
+<div style="margin-left:20px">
+
     @foreach ($ads as $ad)
-        <li>{{ json_encode(array_values($ad)[0]->body)}}</li>
+    <div style="padding: 5px;">
+        <a href="{{ $ad['href'] ?? '' }}">{{ $ad['body']}}</a>
+    </div>
     @endforeach
-</ul>
+</div>
+
 
 <hr>
 
