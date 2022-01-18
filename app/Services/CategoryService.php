@@ -11,10 +11,11 @@ use stdClass;
 class CategoryService
 {
     private static $cats = [];
+    private static $catsNames = [];
 
     private static $instance;
 
-    public static function factory(){
+    public static function factory(): self{
 
         if(!static::$instance){
             static::$instance = new self;
@@ -24,6 +25,14 @@ class CategoryService
 
     public function getCategoryByName(string $name): ?object{
         return static::$cats[$name] ?? null;
+    }
+
+    public function getCategoryById(int $id): ?object{
+        if(!$name = static::$catsNames[$id] ?? null){
+            return null;
+        }
+
+        return $this->getCategoryByName($name);
     }
 
     public function getCategoryIdByName(string $name): ?int{
@@ -62,10 +71,13 @@ class CategoryService
         return $this->categoryChildren[$id] ?? [];
     }
 
+
+
     private function loadCats(): self{
         if(!static::$cats){
             DB::table('categories')->get()->each(function($cat){
                 static::$cats[$cat->name] = $cat;
+                static::$catsNames[$cat->id] = $cat->name;
             });
         }
         return $this;

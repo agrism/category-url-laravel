@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CategoryService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Http\Request;
@@ -51,6 +52,8 @@ class MainController1 extends Controller
                 $paths = DB::table('real_paths')->where('parent_id', $parent->id)->get();
                 if($parent->is_final){
 
+                    $addNewAdPath = $any.'/add';
+
                     $parentData = DB::table('real_path_data')->where('real_path_id', $parent->id)->get();
 
                     foreach($parentData as $parentDataItem){
@@ -99,31 +102,11 @@ class MainController1 extends Controller
             ];
         }
 
-
-        $breadCrumb = [
-            [
-                'text' => 'home',
-                'href' => '/',
-            ]
-        ];
-
-        $exploded = explode('/', $any);
-        $exploded = array_filter($exploded);
-        // array_pop($exploded);
-
-        $prev = '';
-        foreach ( $exploded as $path){
-            $prev .= '/'.$path;
-            $breadCrumb[] = [
-                'text' => $path,
-                'href' => $prev,
-            ];
-        }
-
         return view('index', [
             'paths' => $viewPaths,
-            'breadCrumb' =>$breadCrumb,
+            'breadCrumb' =>$this->getBreadCrumb($any),
             'ads'=>$ads,
+            'addNewAdPath' => $addNewAdPath ?? null,
         ]);
     }
 
@@ -136,32 +119,17 @@ class MainController1 extends Controller
         }
         if(!$ad = DB::table('ads')->where('id', $lastSegment)->first()){
             dd('ad not found!');
-        }
-
-        $breadCrumb = [
-            [
-                'text' => 'home',
-                'href' => '/',
-            ]
-        ];
+        };
 
         $exploded = array_filter($segments);
 
-        $prev = '';
-        foreach ( $exploded as $path){
-            $prev .= '/'.$path;
-            $breadCrumb[] = [
-                'text' => $path,
-                'href' => $prev,
-            ];
-        }
-
-        // dump($breadCrumb);
+        $backPath =  '/'.implode('/', $exploded);
 
         return view('show', [
             'ad' => $ad,
-            'backPath' => '/'.implode('/', $exploded),
-            'breadCrumb' => $breadCrumb,
+            'backPath' => $backPath,
+            'breadCrumb' => $this->getBreadCrumb($backPath),
+            'addNewAdPath' => $backPath.'/add',
         ]);
     }
 
@@ -173,17 +141,33 @@ class MainController1 extends Controller
         $pathWithoutPostficAdd = substr($path,0,  -$strLen);
 
         $segments = explode('/',$pathWithoutPostficAdd);
-        $lastSegment= array_pop($segments);
+
+        $lastSegment= end($segments);
+
         if(is_numeric($lastSegment)){
             $pathWithoutPostficAdd = implode('/', $segments);
+            array_pop($segments);
         }
 
         $pathRecord = DB::table('real_paths')->where('path', $pathWithoutPostficAdd)->first();
 
-        $pathData = DB::table('real_path_data')->where('real_path_id', $pathRecord->id)->get();
+        $pathData = DB::table('real_path_data')
+            ->where('real_path_id', $pathRecord->id)
+            ->get();
+
+        $pathData = $pathData->map(function($item){
+            $item->category_parent = CategoryService::factory()->getCategoryById($item->category_parent_id);
+            $item->category_children = CategoryService::factory()->categoryChildren($item->category_parent_id);
+            return $item;
+        });
+
+        // dump($pathWithoutPostficAdd);
 
         return view('create-ad',[
             'path'=>$path,
+            'pathData' => $pathData,
+            'backPath' => $pathWithoutPostficAdd,
+            'breadCrumb' => $this->getBreadCrumb($pathWithoutPostficAdd),
         ]);
     }
 
@@ -213,93 +197,27 @@ class MainController1 extends Controller
         return redirect()->to($path);
     }
 
+    private function getBreadCrumb(?string $path = null): array{
+        $exploded = explode('/', $path);
+        $exploded = array_filter($exploded);
 
-/*
-    public function index1()
-    {
+        $breadCrumb = [
+            [
+                'text' => 'home',
+                'href' => '/',
+            ]
+        ];
 
-    DB::table('categories')->get()->each(function($cat){
-            $this->cats[$cat->id] = $cat;
-        });
-
-
-        // dump($this->>cats);
-
-        $routes = [];
-
-        DB::table('routes')
-            ->selectRaw('routes.id, route_fragments.parent_category_id, route_fragments.deep, route_fragments.selected_child_category_id')
-            // ->selectRaw('routes.id, route_fragments.deep, route_fragments.selected_child_category_id')
-            ->leftJoin('route_fragments', 'routes.id', '=', 'route_fragments.route_id')
-            ->leftJoin('categories', 'route_fragments.id', '=', 'categories.id')
-            ->orderBy('route_fragments.order', 'asc')
-            ->orderBy('route_fragments.id', 'asc')
-            ->get()
-            ->each(function($route) use(&$routes){
-
-                $limitChildren = [];
-
-                if($limitChild = $route->selected_child_category_id){
-                    $limitChildren[] = $limitChild;
-                }
-
-                $routes[$route->id][] = [
-                    'parent' => [
-                        'id' => $route->parent_category_id,
-                        'name' => $this->cats[$route->parent_category_id]->name,
-                    ],
-                    'selected_child_id' => $route->selected_child_category_id,
-                    'children' => $this->categoryChildren($route->parent_category_id, $limitChildren),
-                ];
-            });
-
-        dump($routes);
-
-        $out = [];
-        $realRoutes = [];
-
-        // foreach ($routes as $route){
-        //     $realRoutesBuff = [];
-        //     $buff = [];
-        //
-        //     $static = '';
-        //
-        //     foreach ($route as $fragment){
-        //             $buff[$fragment['parent']['name']] = $fragment['children'];
-        //
-        //             if($selectedId = $fragment['selected_child_id']){
-        //                 $static .= '/'.$this->cats[$selectedId]->name;
-        //                 continue;
-        //             }
-        //
-        //             foreach ($fragment['children'] as $child){
-        //                 $realRoutesBuff[] = $child->name;
-        //             }
-        //     }
-        //
-        //     $out = $buff;
-        //     $realRoutes = $realRoutesBuff;
-        // }
-
-        foreach ($routes as $route){
-            foreach ($route as $index => $fragments){
-
-                $children = array_values($fragments['children']);
-
-                if(count($children)){
-                    foreach($children as $child){
-
-                    }
-
-                }
-
-                $out[] = array_values($fragments['children'])[0]->name;
-            }
+        $prev = '';
+        foreach ( $exploded as $path){
+            $prev .= '/'.$path;
+            $breadCrumb[] = [
+                'text' => $path,
+                'href' => $prev,
+            ];
         }
 
-        dump($out);
-        // dump($static);
-        dump($realRoutes);
+        return $breadCrumb;
     }
-    */
+
 }
