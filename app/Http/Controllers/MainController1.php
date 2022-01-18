@@ -171,6 +171,10 @@ class MainController1 extends Controller
         ]);
     }
 
+    public function prepareStoreAd(Request $request){
+        return $request->all();
+    }
+
     public function storeAd(Request $request){
 
         $path = $request->get('path');

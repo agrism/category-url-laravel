@@ -19,6 +19,7 @@ Route::get('/{any?}', 'App\Http\Controllers\MainController1@index')
     ->where('any', '.*')
     ->name('main-any');
 Route::post('/store-ad', 'App\Http\Controllers\MainController1@storeAd');
+Route::post('/prepare-store-ad', 'App\Http\Controllers\MainController1@prepareStoreAd');
 
 // function createAdd(?string $path = null){
 //     (new MainController1())->createAdd($path);
